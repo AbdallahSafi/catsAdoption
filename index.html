@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cats</title>
+    <link rel="icon" href="logo/cat.svg" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <!-- Navbar Section -->
+    <header>
+      <div class="container">
+        <a href="index.html"><img class="logo" src="logo/cat.svg" ></a>
+      
+        <!-- <h1 class="logo">LOGO</h1> -->
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="AdoptCat.html">Adopt cat</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Gallery Section -->
+    <div class="gallery-section">
+      <div class="inner-width">
+        <h1>Cats for adoption</h1>
+        <div class="border"></div>
+        <div class="gallery">
+          <a id="img0" class="image">
+            <div id="image0"></div>
+          </a>
+
+          <a id="img1" class="image">
+            <div id="image1"></div>
+          </a>
+
+          <a id="img2" class="image">
+            <div id="image2"></div>
+          </a>
+
+          <a id="img3" class="image">
+            <div id="image3"></div>
+          </a>
+
+          <a id="img4" class="image">
+            <div id="image4"></div>
+          </a>
+
+          <a id="img5" class="image">
+            <div id="image5"></div>
+          </a>
+
+          <a id="img6" class="image">
+            <div id="image6"></div>
+          </a>
+
+          <a id="img7" class="image">
+            <div id="image7"></div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(".gallery").magnificPopup({
+        delegate: "a",
+        type: "image",
+        gallery: {
+          enabled: true,
+        },
+      });
+
+      //  Get the Imgs
+      function ajax_get(url, callback) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            console.log("responseText:" + xmlhttp.responseText);
+            try {
+              var data = JSON.parse(xmlhttp.responseText);
+            } catch (err) {
+              console.log(err.message + " in " + xmlhttp.responseText);
+              return;
+            }
+            callback(data);
+          }
+        };
+
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+      }
+
+        ajax_get(
+          "https://api.thecatapi.com/v1/images/search?limit=8",
+          function (data) {
+            for (let i = 0; i < 9; i++) {
+            var html = '<img src="' + data[i]["url"] + '">';
+            document.getElementById("image" + i).innerHTML = html;
+            document.getElementById("img" + i).href = data[i]["url"];
+          }
+        }
+        );
+      
+    </script>
+  </body>
+</html>
